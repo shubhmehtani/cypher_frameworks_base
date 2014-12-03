@@ -2189,6 +2189,18 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             mCarrierLabel.setVisibility(makeVisible ? View.VISIBLE : View.INVISIBLE);
         }
+	}
+
+    protected boolean hasActiveVisibleNotifications() {
+        return mNotificationData.hasActiveVisibleNotifications();
+    }
+
+    protected boolean hasActiveOngoingNotifications() {
+        return mNotificationData.hasActiveOngoingNotifications();
+    }
+
+    protected boolean hasActiveClearableNotifications() {
+        return mNotificationData.hasActiveClearableNotifications();
     }
 
     @Override
