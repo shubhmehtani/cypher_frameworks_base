@@ -2081,7 +2081,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mLongPressOnHomeBehavior = KEY_ACTION_NOTHING;
         }
 
-        mDoubleTapOnHomeBehavior = res.getInteger(
+        mDoubleTapOnHomeBehavior = mContext.getResources().getInteger(
                 com.android.internal.R.integer.config_doubleTapOnHomeBehavior);
         if (mDoubleTapOnHomeBehavior < KEY_ACTION_NOTHING ||
                 mDoubleTapOnHomeBehavior > KEY_ACTION_SLEEP) {
