@@ -47,8 +47,8 @@ public class LockTaskNotify {
     private boolean hasNavigationBar() {
         return mContext.getResources().getBoolean(
                 com.android.internal.R.bool.config_showNavigationBar)
-                || Settings.Secure.getIntForUser(mContext.getContentResolver(),
-                        Settings.Secure.DEV_FORCE_SHOW_NAVBAR, 0, UserHandle.USER_CURRENT) == 1;
+                || Settings.Global.getIntForUser(mContext.getContentResolver(),
+                        Settings.Global.DEV_FORCE_SHOW_NAVBAR, 0, UserHandle.USER_CURRENT) == 1;
     }
 
     public void showToast(int lockTaskModeState) {
