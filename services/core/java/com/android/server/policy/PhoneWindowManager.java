@@ -543,7 +543,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     boolean mMenuWakeScreen;
     boolean mAssistWakeScreen;
     boolean mAppSwitchWakeScreen;
-    boolean mVolumeWakeScreen;
 
     // During wakeup by volume keys, we still need to capture subsequent events
     // until the key is released. This is required since the beep sound is produced
@@ -1938,12 +1937,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     @Override
                     public void onSwipeFromRight() {
                         if (mNavigationBar != null && mNavigationBarPosition == NAV_BAR_RIGHT) {
-                            requestTransientBars(mNavigationBar);
-                        }
-                    }
-                    @Override
-                    public void onSwipeFromLeft() {
-                        if (mNavigationBar != null && mNavigationBarPosition == NAV_BAR_LEFT) {
                             requestTransientBars(mNavigationBar);
                         }
                     }

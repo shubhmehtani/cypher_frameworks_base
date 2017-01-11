@@ -128,9 +128,6 @@ public class SystemGesturesPointerEventListener implements PointerEventListener 
                     } else if (swipe == SWIPE_FROM_RIGHT) {
                         if (DEBUG) Slog.d(TAG, "Firing onSwipeFromRight");
                         mCallbacks.onSwipeFromRight();
-                    } else if (swipe == SWIPE_FROM_LEFT) {
-                        if (DEBUG) Slog.d(TAG, "Firing onSwipeFromLeft");
-                        mCallbacks.onSwipeFromLeft();
                     }
                 }
                 break;
