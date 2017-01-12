@@ -128,6 +128,7 @@ import com.android.keyguard.KeyguardHostView.OnDismissAction;
 import com.android.keyguard.KeyguardUpdateMonitor;
 import com.android.keyguard.KeyguardUpdateMonitorCallback;
 import com.android.keyguard.ViewMediatorCallback;
+import com.android.systemui.aoscp.UserContentObserver;
 import com.android.systemui.AutoReinflateContainer;
 import com.android.systemui.AutoReinflateContainer.InflateListener;
 import com.android.systemui.BatteryMeterView;
@@ -437,12 +438,15 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     private int mNavigationIconHints = 0;
     private HandlerThread mHandlerThread;
 	
-	class SettingsObserver extends ContentObserver {
+	class SettingsObserver extends UserContentObserver {
         SettingsObserver(Handler handler) {
             super(handler);
         }
 
-        void observe() {
+        @Override
+        protected void observe() {
+            super.observe();
+ 
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.SHOW_FOURG), false, this, UserHandle.USER_ALL);
@@ -465,6 +469,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             update();
         }
+		
+		@Override
+        protected void unobserve() {
+            super.unobserve();
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.unregisterContentObserver(this);
+        }
 
         @Override
         public void update() {
@@ -475,26 +486,35 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
     }
 
-    class DevForceNavbarObserver extends ContentObserver {
+    class DevForceNavbarObserver extends UserContentObserver {
         DevForceNavbarObserver(Handler handler) {
             super(handler);
         }
 
-        void observe() {
+        @Override
+        protected void observe() {
+            super.observe();
+			
             ContentResolver resolver = mContext.getContentResolver();
-            resolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.DEV_FORCE_SHOW_NAVBAR), false, this);
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.DEV_FORCE_SHOW_NAVBAR), false, this);
         }
 
         @Override
-        public void onChange(boolean selfChange) {
-            boolean visible = Settings.System.getIntForUser(mContext.getContentResolver(),
-                    Settings.System.DEV_FORCE_SHOW_NAVBAR, 0, UserHandle.USER_CURRENT) == 1;
+        public void update() {
+            boolean visible = Settings.Secure.getIntForUser(mContext.getContentResolver(),
+                    Settings.Secure.DEV_FORCE_SHOW_NAVBAR, 0, UserHandle.USER_CURRENT) == 1;
+ 
             if (visible) {
                 forceAddNavigationBar();
             } else {
                 removeNavigationBar();
             }
+			
+			// Send a broadcast to Settings to update Key disabling when user changes
+            Intent intent = new Intent("com.aoscp.action.UserChanged");
+            intent.setPackage("com.android.settings");
+            mContext.sendBroadcastAsUser(intent, new UserHandle(UserHandle.USER_CURRENT));
         }
     }
 
