@@ -205,6 +205,10 @@
     <uses-permission android:name="android.permission.SHUTDOWN" />
     <uses-permission android:name="android.permission.SET_ACTIVITY_WATCHER" />
 
+    <!-- Ambient Indication -->
+    <permission android:name="co.aoscp.lunasense.permission.AMBIENT_PLAY" android:protectionLevel="privileged|signature"/>
+    <uses-permission android:name="co.aoscp.lunasense.permission.AMBIENT_PLAY"/>
+
     <application
         android:name=".SystemUIApplication"
         android:persistent="true"
